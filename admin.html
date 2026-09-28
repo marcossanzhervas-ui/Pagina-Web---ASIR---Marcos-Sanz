@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luma | Registros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <a href="index.html" class="brand"><span class="brand-mark">L</span><span>Luma</span></a>
+        <nav class="nav" aria-label="Navegación principal">
+            <a href="index.html">Inicio</a>
+            <a href="quienes-somos.html">Quiénes somos</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+        <a href="index.html" class="nav-cta">Volver</a>
+    </header>
+
+    <main class="page admin-page">
+        <section class="card admin-card">
+            <div class="admin-header">
+                <span class="tag">LUMA / REGISTROS</span>
+                <h1>Visitas de la web</h1>
+                <p class="lead">Panel privado para consultar las entradas y salidas registradas en Supabase.</p>
+            </div>
+
+            <div id="loginBox" class="admin-login">
+                <h2>Acceso privado</h2>
+                <form id="loginForm">
+                    <div class="field"><label for="adminEmail">Email</label><input id="adminEmail" type="email" required></div>
+                    <div class="field"><label for="adminPassword">Contraseña</label><input id="adminPassword" type="password" required></div>
+                    <button class="btn btn-primary" type="submit">Entrar</button>
+                    <p id="loginMessage" class="admin-message"></p>
+                </form>
+            </div>
+
+            <div id="dashboard" class="admin-dashboard" hidden>
+                <div class="admin-stats">
+                    <div><span>Total registros</span><strong id="totalVisits">0</strong></div>
+                    <div><span>Entradas</span><strong id="entryVisits">0</strong></div>
+                    <div><span>Salidas</span><strong id="exitVisits">0</strong></div>
+                </div>
+                <div class="admin-actions"><button id="refreshVisits" class="btn btn-secondary">Actualizar</button><button id="logout" class="btn btn-secondary">Cerrar sesión</button></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Fecha</th><th>Página</th><th>Evento</th><th>Sesión</th></tr></thead>
+                        <tbody id="visitsTable"></tbody>
+                    </table>
+                </div>
+                <p id="dashboardMessage" class="admin-message"></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

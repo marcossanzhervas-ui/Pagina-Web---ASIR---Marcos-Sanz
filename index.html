@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luma | Minimal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-mark">L</span>
+            <span>Luma</span>
+        </div>
+
+        <nav class="nav" aria-label="Navegación principal">
+            <a href="quienes-somos.html">Quiénes somos</a>
+            <div class="nav-item">
+                <a href="#">Productos</a>
+                <div class="nav-menu" aria-label="Lista de productos P">
+                    <a href="#" data-product-type="Producto" data-product-name="Lámpara de pared" data-product-price="48"><span>Lámpara</span><span class="nav-menu-price">$48</span></a>
+                    <a href="#" data-product-type="Producto" data-product-name="Mesa modular" data-product-price="52"><span>Mesa</span><span class="nav-menu-price">$52</span></a>
+                    <a href="#" data-product-type="Producto" data-product-name="Banco minimalista" data-product-price="58"><span>Banco</span><span class="nav-menu-price">$58</span></a>
+                    <a href="#" data-product-type="Producto" data-product-name="Aplique de rincón" data-product-price="64"><span>Aplique</span><span class="nav-menu-price">$64</span></a>
+                </div>
+            </div>
+            <div class="nav-item">
+                <a href="#">Servicios</a>
+                <div class="nav-menu" aria-label="Lista de servicios S">
+                    <a href="#" data-product-type="Servicio" data-product-name="Instalación a medida" data-product-price="39"><span>Instalación</span><span class="nav-menu-price">$39</span></a>
+                    <a href="#" data-product-type="Servicio" data-product-name="Asesoría de estilo" data-product-price="45"><span>Asesoría</span><span class="nav-menu-price">$45</span></a>
+                    <a href="#" data-product-type="Servicio" data-product-name="Mantenimiento premium" data-product-price="49"><span>Mantenimiento</span><span class="nav-menu-price">$49</span></a>
+                    <a href="#" data-product-type="Servicio" data-product-name="Personalización" data-product-price="55"><span>Personalización</span><span class="nav-menu-price">$55</span></a>
+                </div>
+            </div>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+
+        <div class="auth-shell" aria-label="Inicio de sesión">
+            <button type="button" class="auth-trigger">Iniciar sesión</button>
+            <div class="auth-panel">
+                <span class="auth-title">Acceso</span>
+                <label>
+                    Email
+                    <input type="email" placeholder="tu@correo.com">
+                </label>
+                <label>
+                    Contraseña
+                    <input type="password" placeholder="••••••••">
+                </label>
+                <button type="button">Entrar</button>
+            </div>
+        </div>
+
+        <button type="button" class="cart-button" aria-label="Carrito de compras">
+            Carrito
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <div class="cart-panel" aria-label="Contenido del carrito">
+            <div class="cart-header">
+                <span>Tu carrito</span>
+                <button type="button" class="btn-small" id="clearCart">Vaciar</button>
+            </div>
+            <ul class="cart-items" id="cartItems">
+                <li class="empty-cart">Aún no has añadido nada.</li>
+            </ul>
+            <div class="cart-summary">
+                <span>Total</span>
+                <strong id="cartTotal">$0</strong>
+            </div>
+            <div class="cart-actions">
+                <button type="button" id="continueShopping">Seguir</button>
+                <button type="button" class="primary" data-open-purchase>Comprar</button>
+            </div>
+        </div>
+
+        <a href="#" class="nav-cta" data-open-purchase>Comprar</a>
+    </header>
+
+    <div class="modal-overlay" id="purchaseModal" aria-hidden="true">
+        <div class="purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle">
+            <div class="purchase-header">
+                <h2 id="purchaseTitle">Finalizar compra</h2>
+                <button type="button" class="close-modal" aria-label="Cerrar compra">×</button>
+            </div>
+            <p class="purchase-subtitle">Completa tus datos para reservar tu pieza.</p>
+
+            <form>
+                <div class="field">
+                    <label for="buyerName">Nombre</label>
+                    <input id="buyerName" type="text" placeholder="Tu nombre" required>
+                </div>
+
+                <div class="field">
+                    <label for="cardNumber">Número de tarjeta</label>
+                    <input id="cardNumber" type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" required>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="expiryDate">Vencimiento</label>
+                        <input id="expiryDate" type="text" placeholder="MM/AA" required>
+                    </div>
+                    <div class="field">
+                        <label for="cvv">CVV</label>
+                        <input id="cvv" type="text" inputmode="numeric" placeholder="123" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="ralColor">RAL</label>
+                    <select id="ralColor" required>
+                        <option value="">Selecciona un acabado</option>
+                        <option value="RAL 9003">RAL 9003</option>
+                        <option value="RAL 9016">RAL 9016</option>
+                        <option value="RAL 8017">RAL 8017</option>
+                        <option value="RAL 7035">RAL 7035</option>
+                    </select>
+                </div>
+
+                <div class="purchase-summary">
+                    <span>Total</span>
+                    <strong>$49</strong>
+                </div>
+
+                <button type="submit" class="purchase-submit">Pagar ahora</button>
+            </form>
+        </div>
+    </div>
+
+    <main class="page">
+        <section class="card">
+            <div class="content">
+                <div class="info">
+                    <span class="tag"> OFERTA</span>
+                    <div class="hero-badges">
+                        <span class="hero-pill">Minimal</span>
+                        <span class="hero-pill">Funcional</span>
+                        <span class="hero-pill">Premium</span>
+                    </div>
+                    <h1>Lámpara de pared</h1>
+                    <p class="lead">
+                        Una lámpara pensada para iluminar con calma, aportar carácter y realzar cada rincón
+                        de tu hogar con un diseño limpio, elegante y funcional.
+                    </p>
+
+                    <div class="feature-list" aria-label="Características principales">
+                        <div class="feature-item">
+                            <strong>01</strong>
+                            <span>Diseño</span>
+                        </div>
+                        <div class="feature-item">
+                            <strong>04k</strong>
+                            <span>Acabado</span>
+                        </div>
+                        <div class="feature-item">
+                            <strong>7d</strong>
+                            <span>Duración</span>
+                        </div>
+                    </div>
+
+                    <div class="price-row">
+                        <span class="price">$48</span>
+                        <span class="old-price">$69</span>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn btn-primary" data-add-product>Agregar producto</button>
+                        <button type="button" class="btn btn-secondary" data-add-service>Agregar servicio</button>
+                    </div>
+                </div>
+
+                <div class="visual">
+                    <div class="badge">Minimal / Simple</div>
+                    <div class="product-stack" aria-label="Vista previa del servicio">
+                        <div class="product-card" tabindex="0" aria-label="Lámpara de pared minimalista">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&q=80" alt="Lámpara de pared" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
