@@ -1,9 +1,11 @@
 (function () {
+    'use strict';
+
     const configured =
         window.LUMA_SUPABASE_URL &&
         window.LUMA_SUPABASE_PUBLISHABLE_KEY &&
-        !window.LUMA_SUPABASE_URL.includes("TU-PROYECTO") &&
-        !window.LUMA_SUPABASE_PUBLISHABLE_KEY.includes("TU_CLAVE_PUBLICA");
+        !window.LUMA_SUPABASE_URL.includes('TU-PROYECTO') &&
+        !window.LUMA_SUPABASE_PUBLISHABLE_KEY.includes('TU_CLAVE_PUBLICA');
 
     const loginBox = document.getElementById('loginBox');
     const dashboard = document.getElementById('dashboard');
@@ -21,6 +23,12 @@
         window.LUMA_SUPABASE_URL,
         window.LUMA_SUPABASE_PUBLISHABLE_KEY
     );
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+    }
 
     async function loadVisits() {
         dashboardMessage.textContent = 'Cargando...';
@@ -41,10 +49,10 @@
 
         table.innerHTML = data.map(v => `
             <tr>
-                <td>${new Date(v.created_at).toLocaleString('es-ES')}</td>
-                <td>${v.pagina}</td>
-                <td>${v.evento}</td>
-                <td title="${v.session_id}">${v.session_id.slice(0, 8)}…</td>
+                <td>${escapeHtml(new Date(v.created_at).toLocaleString('es-ES'))}</td>
+                <td>${escapeHtml(v.pagina)}</td>
+                <td>${escapeHtml(v.evento)}</td>
+                <td title="${escapeHtml(v.session_id)}">${escapeHtml(v.session_id.slice(0, 8))}…</td>
             </tr>
         `).join('');
         dashboardMessage.textContent = '';
