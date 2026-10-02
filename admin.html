@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luma | Registros</title>
+    <title>Luma | Acceso</title>
     <link rel="stylesheet" href="styles.css">
+    <style>[hidden] { display: none !important; }</style>
 </head>
 <body>
     <header class="topbar">
@@ -20,32 +21,71 @@
     <main class="page admin-page">
         <section class="card admin-card">
             <div class="admin-header">
-                <span class="tag">LUMA / REGISTROS</span>
-                <h1>Visitas de la web</h1>
-                <p class="lead">Panel privado para consultar las entradas y salidas registradas en Supabase.</p>
+                <span class="tag">LUMA / CUENTA</span>
+                <h1 id="pageTitle">Acceso</h1>
+                <p class="lead" id="pageLead">Inicia sesión o crea una cuenta de usuario.</p>
             </div>
 
-            <div id="loginBox" class="admin-login">
-                <h2>Acceso privado</h2>
+            <!-- LOGIN / REGISTRO -->
+            <div id="authBox" class="admin-login">
+                <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button type="button" id="tabLogin" class="btn btn-primary">Iniciar sesión</button>
+                    <button type="button" id="tabRegister" class="btn btn-secondary">Crear cuenta</button>
+                </div>
+
                 <form id="loginForm">
-                    <div class="field"><label for="adminEmail">Email</label><input id="adminEmail" type="email" required></div>
-                    <div class="field"><label for="adminPassword">Contraseña</label><input id="adminPassword" type="password" required></div>
+                    <div class="field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="email" required></div>
+                    <div class="field"><label for="loginPassword">Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
                     <button class="btn btn-primary" type="submit">Entrar</button>
-                    <p id="loginMessage" class="admin-message"></p>
                 </form>
+
+                <form id="registerForm" hidden>
+                    <div class="field"><label for="registerName">Nombre</label><input id="registerName" type="text" autocomplete="name" maxlength="80" required></div>
+                    <div class="field"><label for="registerEmail">Email</label><input id="registerEmail" type="email" autocomplete="email" required></div>
+                    <div class="field"><label for="registerPassword">Contraseña (mínimo 6 caracteres)</label><input id="registerPassword" type="password" autocomplete="new-password" minlength="6" required></div>
+                    <button class="btn btn-primary" type="submit">Crear cuenta</button>
+                </form>
+
+                <p id="authMessage" class="admin-message"></p>
             </div>
 
+            <!-- CUENTA DE USUARIO NORMAL -->
+            <div id="accountBox" class="admin-login" hidden>
+                <h2 id="accountName">Hola</h2>
+                <p id="accountEmail"></p>
+                <p>Tu cuenta es de <strong>usuario</strong>. No tienes acceso al panel de administración.</p>
+                <div class="admin-actions" style="margin-top:16px;">
+                    <a href="index.html" class="btn btn-primary">Ir a la tienda</a>
+                    <button type="button" id="logoutUser" class="btn btn-secondary">Cerrar sesión</button>
+                </div>
+            </div>
+
+            <!-- PANEL ADMIN (solo role = admin) -->
             <div id="dashboard" class="admin-dashboard" hidden>
                 <div class="admin-stats">
                     <div><span>Total registros</span><strong id="totalVisits">0</strong></div>
                     <div><span>Entradas</span><strong id="entryVisits">0</strong></div>
                     <div><span>Salidas</span><strong id="exitVisits">0</strong></div>
+                    <div><span>Usuarios</span><strong id="totalUsers">0</strong></div>
                 </div>
-                <div class="admin-actions"><button id="refreshVisits" class="btn btn-secondary">Actualizar</button><button id="logout" class="btn btn-secondary">Cerrar sesión</button></div>
+                <div class="admin-actions">
+                    <button id="refreshVisits" class="btn btn-secondary" type="button">Actualizar</button>
+                    <button id="logout" class="btn btn-secondary" type="button">Cerrar sesión</button>
+                </div>
+
+                <h2>Visitas</h2>
                 <div class="table-wrap">
                     <table>
                         <thead><tr><th>Fecha</th><th>Página</th><th>Evento</th><th>Sesión</th></tr></thead>
                         <tbody id="visitsTable"></tbody>
+                    </table>
+                </div>
+
+                <h2>Usuarios</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Registro</th><th>Nombre</th><th>Email</th><th>Rol</th></tr></thead>
+                        <tbody id="usersTable"></tbody>
                     </table>
                 </div>
                 <p id="dashboardMessage" class="admin-message"></p>
