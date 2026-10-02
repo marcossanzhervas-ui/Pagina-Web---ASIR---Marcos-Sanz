@@ -282,7 +282,66 @@
         });
     }
 
+    /* ---------- Acceso al panel admin desde el menú "Iniciar sesión" ---------- */
+    function initAuth() {
+        const shell = document.querySelector('.auth-shell');
+        if (!shell || !hasSupabaseConfig || !window.supabase) return;
+
+        const trigger = shell.querySelector('.auth-trigger');
+        const panel = shell.querySelector('.auth-panel');
+        if (!trigger || !panel) return;
+
+        const emailInput = panel.querySelector('input[type="email"]');
+        const passwordInput = panel.querySelector('input[type="password"]');
+        const enterButton = panel.querySelector('button');
+
+        const message = document.createElement('small');
+        message.style.cssText = 'display:block;min-height:1em;margin-top:6px;';
+        panel.appendChild(message);
+
+        // Cliente con sesión persistente: admin.html reutiliza esta misma sesión.
+        const authClient = window.supabase.createClient(
+            window.LUMA_SUPABASE_URL,
+            window.LUMA_SUPABASE_PUBLISHABLE_KEY
+        );
+
+        let loggedIn = false;
+
+        authClient.auth.getSession().then(({ data }) => {
+            if (data && data.session) {
+                loggedIn = true;
+                trigger.textContent = 'Panel admin';
+                panel.style.setProperty('display', 'none', 'important');
+            }
+        });
+
+        trigger.addEventListener('click', () => {
+            if (loggedIn) window.location.href = 'admin.html';
+        });
+
+        async function login() {
+            message.textContent = 'Entrando...';
+            const { error } = await authClient.auth.signInWithPassword({
+                email: emailInput.value.trim(),
+                password: passwordInput.value
+            });
+            if (error) {
+                message.textContent = 'Email o contraseña incorrectos.';
+                return;
+            }
+            window.location.href = 'admin.html';
+        }
+
+        enterButton.addEventListener('click', login);
+        [emailInput, passwordInput].forEach((input) => {
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') { event.preventDefault(); login(); }
+            });
+        });
+    }
+
     // Cada bloque va aislado: si uno falla, el otro sigue funcionando.
+    try { initAuth(); } catch (e) { console.error('Acceso:', e); }
     try { initShop(); } catch (e) { console.error('Tienda:', e); }
     try { initVisits(); } catch (e) { console.error('Visitas:', e); }
 })();
