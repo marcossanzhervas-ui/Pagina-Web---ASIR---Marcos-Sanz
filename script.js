@@ -51,7 +51,29 @@
         if (!modal || !cartButton || !cartItemsList || !purchaseForm) return;
 
         const cart = [];
+        const CART_KEY = 'luma_cart';
         const catalogPrices = {}; // nombre -> precio (se rellena desde Supabase)
+
+        function saveCart() {
+            try { sessionStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) { /* ignorar */ }
+        }
+
+        function loadCart() {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem(CART_KEY) || '[]');
+                if (!Array.isArray(saved)) return;
+                saved.forEach((item) => {
+                    if (item && item.name && typeof item.price === 'number') {
+                        cart.push({
+                            id: uuid(),
+                            type: item.type === 'Servicio' ? 'Servicio' : 'Producto',
+                            name: String(item.name),
+                            price: item.price
+                        });
+                    }
+                });
+            } catch (e) { /* ignorar */ }
+        }
 
         function formatPrice(value) {
             return '$' + Number(value);
@@ -66,6 +88,7 @@
             cartCount.textContent = cart.length;
             cartTotal.textContent = formatPrice(total);
             if (purchaseSummary) purchaseSummary.textContent = formatPrice(total);
+            saveCart();
 
             if (cart.length === 0) {
                 cartItemsList.innerHTML = '<li class="empty-cart">Aún no has añadido nada.</li>';
@@ -161,7 +184,20 @@
         modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
         document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeModal(); });
 
-        /* Pago: guarda el pedido en Supabase (SIN datos de tarjeta) */
+        /* Pago con Stripe Checkout: la tarjeta se introduce en Stripe, nunca en esta web */
+        function resetSubmit() {
+            if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Pagar con Stripe'; }
+        }
+        window.addEventListener('pageshow', resetSubmit); // por si el usuario vuelve atrás desde Stripe
+
+        async function readFunctionError(error) {
+            try {
+                const body = await error.context.json();
+                if (body && body.error) return body.error;
+            } catch (e) { /* ignorar */ }
+            return 'No se pudo iniciar el pago. Inténtalo de nuevo.';
+        }
+
         purchaseForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -169,46 +205,30 @@
                 alert('Añade al menos un producto o servicio antes de pagar.');
                 return;
             }
-
-            const nombre = document.getElementById('buyerName').value.trim();
-            const ral = document.getElementById('ralColor').value;
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-
-            if (client) {
-                if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Procesando...'; }
-
-                const pedidoId = uuid();
-                const { error: orderError } = await client
-                    .from('pedidos')
-                    .insert({ id: pedidoId, nombre, ral, total });
-
-                let itemsError = null;
-                if (!orderError) {
-                    const { error } = await client.from('pedido_items').insert(
-                        cart.map((item) => ({
-                            pedido_id: pedidoId,
-                            tipo: item.type,
-                            nombre: item.name,
-                            precio: item.price
-                        }))
-                    );
-                    itemsError = error;
-                }
-
-                if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Pagar ahora'; }
-
-                if (orderError || itemsError) {
-                    console.error(orderError || itemsError);
-                    alert('No se pudo guardar el pedido. Inténtalo de nuevo.');
-                    return;
-                }
+            if (!client) {
+                alert('Configura supabase-config.js para poder cobrar.');
+                return;
             }
 
-            alert('Pedido registrado con éxito.');
-            cart.length = 0;
-            renderCart();
-            purchaseForm.reset();
-            closeModal();
+            if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Redirigiendo a Stripe...'; }
+
+            try {
+                const { data, error } = await client.functions.invoke('create-checkout', {
+                    body: {
+                        nombre: document.getElementById('buyerName').value.trim(),
+                        email: document.getElementById('buyerEmail').value.trim(),
+                        ral: document.getElementById('ralColor').value,
+                        items: cart.map((item) => item.name)
+                    }
+                });
+                if (error) throw new Error(await readFunctionError(error));
+                if (!data || !data.url) throw new Error('Respuesta de pago no válida.');
+                window.location.href = data.url;
+            } catch (err) {
+                console.error(err);
+                alert(err.message || 'No se pudo iniciar el pago.');
+                resetSubmit();
+            }
         });
 
         /* Catálogo: actualiza precios desde Supabase */
@@ -232,8 +252,22 @@
             });
         }
 
+        loadCart();
         renderCart();
         loadCatalog();
+
+        // Resultado al volver de Stripe (?pago=ok / ?pago=cancelado)
+        const pago = new URLSearchParams(window.location.search).get('pago');
+        if (pago) {
+            window.history.replaceState(null, '', window.location.pathname);
+            if (pago === 'ok') {
+                cart.length = 0;
+                renderCart();
+                setTimeout(() => alert('¡Pago completado! Gracias por tu compra.'), 100);
+            } else if (pago === 'cancelado') {
+                setTimeout(() => alert('Pago cancelado. Tu carrito sigue guardado.'), 100);
+            }
+        }
     }
 
     /* ---------- Registro de visitas ---------- */

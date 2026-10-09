@@ -71,7 +71,7 @@
                 <h2 id="purchaseTitle">Finalizar compra</h2>
                 <button type="button" class="close-modal" aria-label="Cerrar compra">×</button>
             </div>
-            <p class="purchase-subtitle">Completa tus datos para reservar tu pieza.</p>
+            <p class="purchase-subtitle">Completa tus datos. El pago se realiza de forma segura en Stripe.</p>
 
             <form>
                 <div class="field">
@@ -80,19 +80,8 @@
                 </div>
 
                 <div class="field">
-                    <label for="cardNumber">Número de tarjeta</label>
-                    <input id="cardNumber" type="text" inputmode="numeric" placeholder="1234 5678 9012 3456" required>
-                </div>
-
-                <div class="field-row">
-                    <div class="field">
-                        <label for="expiryDate">Vencimiento</label>
-                        <input id="expiryDate" type="text" placeholder="MM/AA" required>
-                    </div>
-                    <div class="field">
-                        <label for="cvv">CVV</label>
-                        <input id="cvv" type="text" inputmode="numeric" placeholder="123" required>
-                    </div>
+                    <label for="buyerEmail">Email</label>
+                    <input id="buyerEmail" type="email" placeholder="tu@correo.com" autocomplete="email" required>
                 </div>
 
                 <div class="field">
@@ -111,7 +100,7 @@
                     <strong>$49</strong>
                 </div>
 
-                <button type="submit" class="purchase-submit">Pagar ahora</button>
+                <button type="submit" class="purchase-submit">Pagar con Stripe</button>
             </form>
         </div>
     </div>
