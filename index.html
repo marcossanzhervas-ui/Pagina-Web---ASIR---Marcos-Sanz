@@ -71,7 +71,7 @@
                 <h2 id="purchaseTitle">Finalizar compra</h2>
                 <button type="button" class="close-modal" aria-label="Cerrar compra">×</button>
             </div>
-            <p class="purchase-subtitle">Completa tus datos. El pago se realiza de forma segura en Stripe.</p>
+            <p class="purchase-subtitle">Pagas con tu cuenta. El pago se realiza de forma segura en Stripe.</p>
 
             <form>
                 <div class="field">
@@ -79,21 +79,7 @@
                     <input id="buyerName" type="text" placeholder="Tu nombre" required>
                 </div>
 
-                <div class="field">
-                    <label for="buyerEmail">Email</label>
-                    <input id="buyerEmail" type="email" placeholder="tu@correo.com" autocomplete="email" required>
-                </div>
-
-                <div class="field">
-                    <label for="ralColor">RAL</label>
-                    <select id="ralColor" required>
-                        <option value="">Selecciona un acabado</option>
-                        <option value="RAL 9003">RAL 9003</option>
-                        <option value="RAL 9016">RAL 9016</option>
-                        <option value="RAL 8017">RAL 8017</option>
-                        <option value="RAL 7035">RAL 7035</option>
-                    </select>
-                </div>
+                <p class="purchase-subtitle" id="buyerAccount"></p>
 
                 <div class="purchase-summary">
                     <span>Total</span>

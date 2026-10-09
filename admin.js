@@ -101,6 +101,10 @@
         `).join('');
     }
 
+    // ?volver=index.html -> tras iniciar sesión se regresa a esa página (solo archivos .html locales)
+    const volverParam = new URLSearchParams(window.location.search).get('volver');
+    const volver = /^[a-z0-9\-]+\.html$/i.test(volverParam || '') ? volverParam : null;
+
     /* ---------- Qué se muestra según sesión y rol ---------- */
     async function updateUI() {
         const { data: { session } } = await client.auth.getSession();
@@ -111,7 +115,14 @@
 
         if (!session) {
             $('pageTitle').textContent = 'Acceso';
-            $('pageLead').textContent = 'Inicia sesión o crea una cuenta de usuario.';
+            $('pageLead').textContent = volver
+                ? 'Inicia sesión o crea una cuenta para completar tu compra.'
+                : 'Inicia sesión o crea una cuenta de usuario.';
+            return;
+        }
+
+        if (volver) {
+            window.location.href = volver;
             return;
         }
 

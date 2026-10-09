@@ -18,6 +18,24 @@
         )
         : null;
 
+    // Cliente con sesión persistente: comparte el login hecho en admin.html.
+    const authClient = (hasSupabaseConfig && window.supabase)
+        ? window.supabase.createClient(
+            window.LUMA_SUPABASE_URL,
+            window.LUMA_SUPABASE_PUBLISHABLE_KEY
+        )
+        : null;
+
+    async function getSession() {
+        if (!authClient) return null;
+        const { data } = await authClient.auth.getSession();
+        return data ? data.session : null;
+    }
+
+    function goToLogin() {
+        window.location.href = 'admin.html?volver=index.html';
+    }
+
     function uuid() {
         return (window.crypto && crypto.randomUUID)
             ? crypto.randomUUID()
@@ -174,8 +192,23 @@
         }
 
         document.querySelectorAll('[data-open-purchase]').forEach((button) => {
-            button.addEventListener('click', (event) => {
+            button.addEventListener('click', async (event) => {
                 event.preventDefault();
+
+                const session = await getSession();
+                if (!session) {
+                    alert('Inicia sesión para continuar con el pago. Tu carrito se conservará.');
+                    goToLogin();
+                    return;
+                }
+
+                const account = document.getElementById('buyerAccount');
+                if (account) account.textContent = 'Comprando como ' + session.user.email;
+
+                const nameInput = document.getElementById('buyerName');
+                const savedName = session.user.user_metadata && session.user.user_metadata.nombre;
+                if (nameInput && !nameInput.value && savedName) nameInput.value = savedName;
+
                 openModal();
             });
         });
@@ -205,19 +238,25 @@
                 alert('Añade al menos un producto o servicio antes de pagar.');
                 return;
             }
-            if (!client) {
+            if (!authClient) {
                 alert('Configura supabase-config.js para poder cobrar.');
+                return;
+            }
+
+            const session = await getSession();
+            if (!session) {
+                alert('Tu sesión ha caducado. Inicia sesión para pagar.');
+                goToLogin();
                 return;
             }
 
             if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Redirigiendo a Stripe...'; }
 
             try {
-                const { data, error } = await client.functions.invoke('create-checkout', {
+                const { data, error } = await authClient.functions.invoke('create-checkout', {
+                    headers: { Authorization: 'Bearer ' + session.access_token },
                     body: {
                         nombre: document.getElementById('buyerName').value.trim(),
-                        email: document.getElementById('buyerEmail').value.trim(),
-                        ral: document.getElementById('ralColor').value,
                         items: cart.map((item) => item.name)
                     }
                 });
