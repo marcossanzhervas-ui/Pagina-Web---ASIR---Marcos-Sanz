@@ -163,6 +163,14 @@
             });
         });
 
+        // Botones de los catálogos independientes productos.html y servicios.html.
+        document.querySelectorAll('[data-catalog-add]').forEach((button) => {
+            button.addEventListener('click', () => {
+                addToCart(button.dataset.productType === 'Servicio' ? 'Servicio' : 'Producto',
+                    button.dataset.productName, Number(button.dataset.productPrice));
+            });
+        });
+
         const addProductBtn = document.querySelector('[data-add-product]');
         const addServiceBtn = document.querySelector('[data-add-service]');
 

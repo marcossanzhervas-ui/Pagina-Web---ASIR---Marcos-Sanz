@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Catálogo de servicios | Luma</title><meta name="description" content="Explora el catálogo Luma de catálogo de servicios."><link rel="stylesheet" href="styles.css"></head><body>
+    <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Luma, inicio"><span class="brand-mark">L</span><span>Luma</span></a>
+        <nav class="nav" aria-label="Navegación principal">
+            <a href="index.html">Inicio</a><a href="quienes-somos.html">Quiénes somos</a>
+            <a href="productos.html">Productos</a><a href="servicios.html">Servicios</a><a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="auth-shell"><button type="button" class="auth-trigger" onclick="window.location.href='admin.html'">Iniciar sesión</button></div>
+        <button type="button" class="cart-button" aria-label="Carrito de compras">Carrito <span class="cart-count" id="cartCount">0</span></button>
+        <div class="cart-panel" aria-label="Contenido del carrito">
+            <div class="cart-header"><span>Tu carrito</span><button type="button" class="btn-small" id="clearCart">Vaciar</button></div>
+            <ul class="cart-items" id="cartItems"><li class="empty-cart">Aún no has añadido nada.</li></ul>
+            <div class="cart-summary"><span>Total</span><strong id="cartTotal">$0</strong></div>
+            <div class="cart-actions"><button type="button" id="continueShopping">Seguir</button><button type="button" class="primary" data-open-purchase>Comprar</button></div>
+        </div>
+        <a href="#" class="nav-cta" data-open-purchase>Comprar</a>
+    </header>
+    <div class="modal-overlay" id="purchaseModal" aria-hidden="true">
+        <div class="purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle">
+            <div class="purchase-header"><h2 id="purchaseTitle">Finalizar compra</h2><button type="button" class="close-modal" aria-label="Cerrar compra">×</button></div>
+            <p class="purchase-subtitle">Pagas con tu cuenta. El pago se realiza de forma segura en Stripe.</p>
+            <form><div class="field"><label for="buyerName">Nombre</label><input id="buyerName" type="text" placeholder="Tu nombre" required></div><p class="purchase-subtitle" id="buyerAccount"></p><div class="purchase-summary"><span>Total</span><strong>$0</strong></div><button type="submit" class="purchase-submit">Pagar con Stripe</button></form>
+        </div>
+    </div>
+<main class="catalog-page"><section class="catalog-heading"><span class="catalog-kicker">Luma / Servicios</span><h1>Catálogo de servicios</h1><p>Soluciones a medida para instalar, cuidar y personalizar tus espacios con el estilo Luma.</p></section><section class="catalog-grid" aria-label="Catálogo de catálogo de servicios">
+            <article class="catalog-card" id="instalacion">
+                <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=900&q=80" alt="Instalación a medida" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Servicio</span><h2>Instalación a medida</h2><p>Instalación cuidada y adaptada a las características de tu espacio.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$39</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Servicio" data-product-name="Instalación a medida" data-product-price="39">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="asesoria">
+                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80" alt="Asesoría de estilo" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Servicio</span><h2>Asesoría de estilo</h2><p>Te ayudamos a elegir materiales, acabados e iluminación.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$45</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Servicio" data-product-name="Asesoría de estilo" data-product-price="45">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="mantenimiento">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80" alt="Mantenimiento premium" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Servicio</span><h2>Mantenimiento premium</h2><p>Revisión y mantenimiento para conservar tus piezas en perfecto estado.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$49</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Servicio" data-product-name="Mantenimiento premium" data-product-price="49">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="personalizacion">
+                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80" alt="Personalización" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Servicio</span><h2>Personalización</h2><p>Ajustamos detalles y acabados para acercarnos a tu idea.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$55</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Servicio" data-product-name="Personalización" data-product-price="55">Añadir al carrito</button></div>
+                </div>
+            </article>
+</section><p class="catalog-note">Selecciona «Añadir al carrito» para incluir cualquier artículo. Puedes revisar y quitar artículos desde el carrito superior.</p></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="script.js"></script>
+</body></html>

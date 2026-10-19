@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Catálogo de productos | Luma</title><meta name="description" content="Explora el catálogo Luma de catálogo de productos."><link rel="stylesheet" href="styles.css"></head><body>
+    <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Luma, inicio"><span class="brand-mark">L</span><span>Luma</span></a>
+        <nav class="nav" aria-label="Navegación principal">
+            <a href="index.html">Inicio</a><a href="quienes-somos.html">Quiénes somos</a>
+            <a href="productos.html">Productos</a><a href="servicios.html">Servicios</a><a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="auth-shell"><button type="button" class="auth-trigger" onclick="window.location.href='admin.html'">Iniciar sesión</button></div>
+        <button type="button" class="cart-button" aria-label="Carrito de compras">Carrito <span class="cart-count" id="cartCount">0</span></button>
+        <div class="cart-panel" aria-label="Contenido del carrito">
+            <div class="cart-header"><span>Tu carrito</span><button type="button" class="btn-small" id="clearCart">Vaciar</button></div>
+            <ul class="cart-items" id="cartItems"><li class="empty-cart">Aún no has añadido nada.</li></ul>
+            <div class="cart-summary"><span>Total</span><strong id="cartTotal">$0</strong></div>
+            <div class="cart-actions"><button type="button" id="continueShopping">Seguir</button><button type="button" class="primary" data-open-purchase>Comprar</button></div>
+        </div>
+        <a href="#" class="nav-cta" data-open-purchase>Comprar</a>
+    </header>
+    <div class="modal-overlay" id="purchaseModal" aria-hidden="true">
+        <div class="purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseTitle">
+            <div class="purchase-header"><h2 id="purchaseTitle">Finalizar compra</h2><button type="button" class="close-modal" aria-label="Cerrar compra">×</button></div>
+            <p class="purchase-subtitle">Pagas con tu cuenta. El pago se realiza de forma segura en Stripe.</p>
+            <form><div class="field"><label for="buyerName">Nombre</label><input id="buyerName" type="text" placeholder="Tu nombre" required></div><p class="purchase-subtitle" id="buyerAccount"></p><div class="purchase-summary"><span>Total</span><strong>$0</strong></div><button type="submit" class="purchase-submit">Pagar con Stripe</button></form>
+        </div>
+    </div>
+<main class="catalog-page"><section class="catalog-heading"><span class="catalog-kicker">Luma / Productos</span><h1>Catálogo de productos</h1><p>Piezas minimalistas para crear espacios funcionales, cálidos y con personalidad.</p></section><section class="catalog-grid" aria-label="Catálogo de catálogo de productos">
+            <article class="catalog-card" id="lampara">
+                <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80" alt="Lámpara de pared" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Producto</span><h2>Lámpara de pared</h2><p>Diseño limpio y luz cálida para dar carácter a cualquier rincón.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$48</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Producto" data-product-name="Lámpara de pared" data-product-price="48">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="mesa">
+                <img src="https://images.unsplash.com/photo-1499933374294-4584851497cc?auto=format&fit=crop&w=900&q=80" alt="Mesa modular" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Producto</span><h2>Mesa modular</h2><p>Una pieza versátil y funcional que se adapta a tu espacio.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$52</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Producto" data-product-name="Mesa modular" data-product-price="52">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="banco">
+                <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=80" alt="Banco minimalista" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Producto</span><h2>Banco minimalista</h2><p>Banco de líneas sencillas, pensado para combinar estilo y comodidad.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$58</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Producto" data-product-name="Banco minimalista" data-product-price="58">Añadir al carrito</button></div>
+                </div>
+            </article>
+            <article class="catalog-card" id="aplique">
+                <img src="https://images.unsplash.com/photo-1543198126-a8ad8e47fb22?auto=format&fit=crop&w=900&q=80" alt="Aplique de rincón" loading="lazy">
+                <div class="catalog-card-body"><span class="catalog-label">Producto</span><h2>Aplique de rincón</h2><p>Iluminación de acento para crear ambientes acogedores.</p>
+                    <div class="catalog-price-row"><span class="catalog-price">$64</span><button type="button" class="catalog-add" data-catalog-add data-product-type="Producto" data-product-name="Aplique de rincón" data-product-price="64">Añadir al carrito</button></div>
+                </div>
+            </article>
+</section><p class="catalog-note">Selecciona «Añadir al carrito» para incluir cualquier artículo. Puedes revisar y quitar artículos desde el carrito superior.</p></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="script.js"></script>
+</body></html>
